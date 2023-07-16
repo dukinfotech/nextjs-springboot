@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 .container {
+  max-width: 100%;
   padding: 2rem;
   height: calc(100% - 4rem);
 }
