@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.container {
+  padding: 2rem;
+  height: calc(100% - 4rem);
+}
+
+.sidebar-header, .sidebar-header-center {
+  --tw-backdrop-saturate: unset;
+}
+
+.sidebar-header header, .sidebar-header-center header {
+  padding: 0;
+}
+
+.sidebar-header-center header {
+  flex-basis: content;
+}
+
+.active a {
+  color: rgb(17 24 39);
+  background-color: rgb(243 244 246);
+}
+
+.navbar {
+  justify-content: space-between;
+}
+
+.navbar header {
+  max-width: 100%;
+}
