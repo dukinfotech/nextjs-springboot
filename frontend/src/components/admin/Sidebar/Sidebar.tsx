@@ -25,7 +25,7 @@ export default function Sidebar() {
         <Header onToggle={() => dispatch(toggleSidebar())} />
       </div>
       <ul className="space-y-2">
-        <li className={pathname === "/" ? "active" : ""}>
+        <li className={pathname === "/admin" ? "active" : ""}>
           <a
             href="#"
             className={`${
