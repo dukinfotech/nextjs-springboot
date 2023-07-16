@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  backend:
+    depends_on:
+      - postgres
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/postgres
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+  postgres:
+    image: postgres:15.3-alpine
+    restart: always
+    volumes:
+      - app-data:/var/lib/postgresql/${DB_NAME}/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    
+volumes:
+  app-data:
