@@ -7,27 +7,31 @@ import {
   NavbarItem,
   Button,
 } from "@nextui-org/react";
-import { useContext } from "react";
-import { SidebarContext } from "./SidebarContext";
 import { MenuBurger } from "react-flaticons";
+import { useAppSelector } from "@/hooks/hook";
 
 interface HeaderProps {
   onToggle: () => void;
 }
 
 export default function Header({ onToggle }: HeaderProps) {
-  const { isShow } = useContext(SidebarContext);
+  const isShowSidebar = useAppSelector((state) => state.app.isShowSidebar);
 
   return (
     <Navbar
       className={`${
-        isShow ? "sidebar-header" : "sidebar-header-center"
+        isShowSidebar ? "sidebar-header" : "sidebar-header-center"
       } bg-transparent`}
     >
-      <NavbarBrand className={`${isShow ? "block" : "hidden"} text-white`}>
+      <NavbarBrand
+        className={`${isShowSidebar ? "block" : "hidden"} text-white`}
+      >
         <p className="font-bold text-inherit">Dx2 Pro</p>
       </NavbarBrand>
-      <NavbarContent justify={isShow ? "end" : "center"} className="basis">
+      <NavbarContent
+        justify={isShowSidebar ? "end" : "center"}
+        className="basis"
+      >
         <NavbarItem>
           <Button isIconOnly color="primary" variant="flat" onPress={onToggle}>
             <MenuBurger />
