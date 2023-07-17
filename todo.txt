@@ -1,0 +1,6 @@
+1. Build file .jar bằng docker
+2. Thiết lập docker frontend
+3. Config spring data with jwt
+4. filter by deleted_at null mac dinh
+5. Seed data
+https://www.danvega.dev/blog/2022/09/06/spring-security-jwt/
