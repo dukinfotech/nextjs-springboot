@@ -1,6 +1,7 @@
 package dx2.backend.modules.permissions;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import dx2.backend.modules.roles.RoleEntity;
 import dx2.backend.modules.users.UserEntity;
@@ -21,21 +22,21 @@ public class PermissionEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "name")
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "created_at")
+  @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
 
-  @Column(name = "updated_at")
+  @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
-  @ManyToMany
-  Set<UserEntity> users;
+  @ManyToMany(mappedBy = "permissions")
+  Set<UserEntity> users = new HashSet<>();
 
-  @ManyToMany
-  Set<RoleEntity> roles;
+  @ManyToMany(mappedBy = "permissions")
+  Set<RoleEntity> roles = new HashSet<>();
 }
