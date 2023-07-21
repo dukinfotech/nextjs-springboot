@@ -3,6 +3,10 @@ package dx2.backend.modules.roles;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import dx2.backend.modules.permissions.PermissionEntity;
 import dx2.backend.modules.users.UserEntity;
 import jakarta.persistence.CascadeType;
@@ -20,6 +24,8 @@ import lombok.Data;
 
 @Entity
 @Table(name = "roles")
+@SQLDelete(sql = "UPDATE roles SET deleted_at = current_timestamp  WHERE id=?")
+@Where(clause = "deleted_at IS NULL")
 @Data
 public class RoleEntity {
   @Id

@@ -3,6 +3,10 @@ package dx2.backend.modules.permissions;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import dx2.backend.modules.roles.RoleEntity;
 import dx2.backend.modules.users.UserEntity;
 import jakarta.persistence.Column;
@@ -16,6 +20,8 @@ import lombok.Data;
 
 @Entity
 @Table(name = "permissions")
+@SQLDelete(sql = "UPDATE permissions SET deleted_at = current_timestamp  WHERE id=?")
+@Where(clause = "deleted_at IS NULL")
 @Data
 public class PermissionEntity {
   @Id
