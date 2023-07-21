@@ -51,6 +51,7 @@ public class DataSeeder {
       for (var roleName : roleNames) {
         var newRole = new RoleEntity();
         newRole.setName(roleName);
+        newRole.setText(roleName);
         newRole.setCreatedAt(now);
         newRole.setUpdatedAt(now);
         newRoles.add(newRole);
@@ -87,6 +88,7 @@ public class DataSeeder {
       for (var permissionName : permissionNames) {
         var newPermission = new PermissionEntity();
         newPermission.setName(permissionName);
+        newPermission.setText(permissionName);
         newPermission.setCreatedAt(now);
         newPermission.setUpdatedAt(now);
         newPermissions.add(newPermission);

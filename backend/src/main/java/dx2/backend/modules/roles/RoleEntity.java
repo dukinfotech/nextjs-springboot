@@ -29,6 +29,9 @@ public class RoleEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @Column(name = "text", nullable = false)
+  private String text;
+
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
 
