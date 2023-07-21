@@ -5,5 +5,7 @@ import java.util.List;
 
 
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
+  RoleEntity findOneByName(String name);
+
   List<RoleEntity> findByNameIn(List<String> names);
 }

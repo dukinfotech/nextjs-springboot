@@ -1,8 +1,8 @@
 package dx2.backend.modules.permissions;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import dx2.backend.modules.roles.RoleEntity;
 import dx2.backend.modules.users.UserEntity;
 import jakarta.persistence.Column;
@@ -35,8 +35,8 @@ public class PermissionEntity {
   private LocalDateTime deletedAt;
 
   @ManyToMany(mappedBy = "permissions")
-  Set<UserEntity> users = new HashSet<>();
+  List<UserEntity> users = new ArrayList<UserEntity>();
 
   @ManyToMany(mappedBy = "permissions")
-  Set<RoleEntity> roles = new HashSet<>();
+  List<RoleEntity> roles = new ArrayList<RoleEntity>();
 }

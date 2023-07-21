@@ -1,8 +1,8 @@
 package dx2.backend.modules.users;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import dx2.backend.modules.permissions.PermissionEntity;
 import dx2.backend.modules.roles.RoleEntity;
 import jakarta.persistence.CascadeType;
@@ -55,7 +55,7 @@ public class UserEntity {
       @JoinColumn(name = "user_id")
   }, inverseJoinColumns = {
       @JoinColumn(name = "role_id") })
-  private Set<RoleEntity> roles = new HashSet<>();
+  private List<RoleEntity> roles = new ArrayList<RoleEntity>();
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = {
       CascadeType.PERSIST,
@@ -65,5 +65,5 @@ public class UserEntity {
       @JoinColumn(name = "user_id")
   }, inverseJoinColumns = {
       @JoinColumn(name = "permission_id") })
-  private Set<PermissionEntity> permissions = new HashSet<>();
+  private List<PermissionEntity> permissions = new ArrayList<PermissionEntity>();
 }
