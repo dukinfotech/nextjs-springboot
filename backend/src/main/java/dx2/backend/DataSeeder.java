@@ -6,14 +6,13 @@ import dx2.backend.modules.roles.RoleEntity;
 import dx2.backend.modules.roles.RoleRepository;
 import dx2.backend.modules.users.UserEntity;
 import dx2.backend.modules.users.UserRepository;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,6 +25,9 @@ public class DataSeeder {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
   @EventListener
   public void seed(ContextRefreshedEvent event) {
@@ -109,9 +111,7 @@ public class DataSeeder {
       newUser.setFirstName("Duc");
       newUser.setLastName("Doan");
       newUser.setEmail("dukinfotech@gmail.com");
-      var strength = 10;
-      var bcryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
-      newUser.setHashedPassword(bcryptPasswordEncoder.encode("@Haiphong888"));
+      newUser.setHashedPassword(this.passwordEncoder.encode("@Haiphong888"));
       newUser.setCreatedAt(now);
       newUser.setUpdatedAt(now);
 
