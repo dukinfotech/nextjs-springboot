@@ -1,5 +1,8 @@
 "use client";
 
+import { useAppDispatch } from "@/hooks/hook";
+import { storageAccessToken } from "@/states/userSlice";
+import { api } from "@/utils/api";
 import {
   Button,
   Input,
@@ -9,12 +12,49 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import { useState } from "react";
-import { Eye, EyeCrossed, Envelope, Lock } from "react-flaticons";
+import { useMemo, useState } from "react";
+import { Eye, EyeCrossed } from "react-flaticons";
+import { useRouter } from "next/navigation";
+
+type Credentials = {
+  email?: string;
+  password?: string;
+};
 
 export default function LoginPage() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+  const [credentials, setCredentials] = useState<Credentials>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorCode, setErrorCode] = useState<number>();
+
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const errorMsg = useMemo(() => {
+    if (errorCode) {
+      return errorCode === 401
+        ? "Invalid email or password."
+        : "Internal Server Error";
+    } else {
+      return null;
+    }
+  }, [errorCode]);
+
+  const handleLogin = async () => {
+    if (credentials) {
+      setIsLoading(true);
+      const res = await api.post("/api/auth/login", credentials);
+      setIsLoading(false);
+      if (res.ok) {
+        var data = await res.text();
+        dispatch(storageAccessToken(data));
+        router.replace("/admin");
+      } else {
+        setErrorCode(res.status);
+      }
+    }
+  };
 
   return (
     <Modal isOpen={true} placement="top-center" hideCloseButton>
@@ -23,12 +63,17 @@ export default function LoginPage() {
           <>
             <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
             <ModalBody>
+              <i className="text-red-500">{errorMsg}</i>
               <Input
                 autoFocus
                 label="Email"
                 placeholder="Enter your email"
                 variant="bordered"
-                color="primary"
+                color={errorMsg ? "danger" : "primary"}
+                onValueChange={(value) =>
+                  setCredentials({ ...credentials, email: value })
+                }
+                onChange={() => setErrorCode(undefined)}
               />
               <Input
                 endContent={
@@ -48,7 +93,11 @@ export default function LoginPage() {
                 placeholder="Enter your password"
                 type={isVisible ? "text" : "password"}
                 variant="bordered"
-                color="primary"
+                color={errorMsg ? "danger" : "primary"}
+                onValueChange={(value) =>
+                  setCredentials({ ...credentials, password: value })
+                }
+                onChange={() => setErrorCode(undefined)}
               />
               {/* <div className="flex py-2 px-1 justify-between">
                 <Link color="primary" href="#" size="sm">
@@ -57,7 +106,15 @@ export default function LoginPage() {
               </div> */}
             </ModalBody>
             <ModalFooter>
-              <Button color="primary">Login</Button>
+              <Button
+                color="primary"
+                onPress={handleLogin}
+                isDisabled={
+                  !credentials?.email || !credentials.password || isLoading
+                }
+              >
+                Login
+              </Button>
             </ModalFooter>
           </>
         )}

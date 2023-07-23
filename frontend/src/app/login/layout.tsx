@@ -1,3 +1,4 @@
+import { Providers } from "@/providers/Providers";
 import "../globals.css";
 
 export default function LoginLayout({
@@ -7,7 +8,9 @@ export default function LoginLayout({
 }) {
   return (
     <html lang="en" className="light">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
