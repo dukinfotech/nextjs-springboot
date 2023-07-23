@@ -1,21 +1,21 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { CookieStorage } from "redux-persist-cookie-storage";
-import Cookies from "cookies-js";
+import Cookies from "js-cookie";
 import thunk from "redux-thunk";
-import appReducer from "./appSlice";
-import authReducer from "./authSlice";
+import appReducer from "./slices/appSlice";
+import authReducer from "./slices/authSlice";
+import storage from "./storage";
 
 const rootPersistConfig = {
   key: "root",
-  storage
+  storage,
 };
 
 const authPersistConfig = {
   key: "auth",
-  storage: new CookieStorage(Cookies)
-}
+  storage: new CookieStorage(Cookies),
+};
 
 const rootReducer = combineReducers({
   app: appReducer,

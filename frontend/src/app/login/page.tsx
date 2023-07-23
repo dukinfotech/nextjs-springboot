@@ -1,7 +1,7 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { storageAccessToken } from "@/states/authSlice";
+import { useAppDispatch } from "@/hooks/hook";
+import { storageAccessToken } from "@/states/slices/authSlice";
 import { api } from "@/utils/api";
 import {
   Button,

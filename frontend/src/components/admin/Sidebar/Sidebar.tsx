@@ -5,7 +5,7 @@ import Header from "./Header";
 import { ChartPie } from "react-flaticons";
 import { usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { toggleSidebar } from "@/states/appSlice";
+import { toggleSidebar } from "@/states/slices/appSlice";
 
 export default function Sidebar() {
   const pathname = usePathname();

@@ -6,13 +6,12 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Button,
 } from "@nextui-org/react";
 import { api } from "@/utils/api";
 import UserEntity from "@/entities/UserEntity";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { logout, setUserInfo } from "@/states/authSlice";
+import { logout, setUserInfo } from "@/states/slices/authSlice";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
