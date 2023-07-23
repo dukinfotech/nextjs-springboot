@@ -19,4 +19,15 @@ public class UserController {
     var users = userService.findAll();
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
+
+  @GetMapping("/info")
+  ResponseEntity<UserEntity> getLoginUserInfo() {
+    var userOptional = userService.getLoginUserInfo();
+    if (userOptional.isPresent()) {
+      var user = userOptional.get();
+      return ResponseEntity.ok(user);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
 }

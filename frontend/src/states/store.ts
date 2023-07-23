@@ -5,21 +5,21 @@ import { CookieStorage } from "redux-persist-cookie-storage";
 import Cookies from "cookies-js";
 import thunk from "redux-thunk";
 import appReducer from "./appSlice";
-import userReducer from "./userSlice";
+import authReducer from "./authSlice";
 
 const rootPersistConfig = {
   key: "root",
   storage
 };
 
-const userPersistConfig = {
-  key: "user",
+const authPersistConfig = {
+  key: "auth",
   storage: new CookieStorage(Cookies)
 }
 
 const rootReducer = combineReducers({
   app: appReducer,
-  user: persistReducer(userPersistConfig, userReducer),
+  auth: persistReducer(authPersistConfig, authReducer),
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
