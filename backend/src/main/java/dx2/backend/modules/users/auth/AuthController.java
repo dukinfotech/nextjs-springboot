@@ -1,5 +1,6 @@
 package dx2.backend.modules.users.auth;
 
+import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class AuthController {
     try {
       var token = this.authService.authenticate(credentials);
       return ResponseEntity.ok(token);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+    } catch (AuthenticationException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password.");
     }
   }
 }

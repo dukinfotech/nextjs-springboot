@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -26,10 +25,10 @@ public class AuthService {
   @Autowired
   UserRepository userRepository;
 
-  public String authenticate(Credentials credentials) throws NotFoundException, AuthenticationException {
+  public String authenticate(Credentials credentials) throws AuthenticationException {
     var userOptional = userRepository.findOneByEmail(credentials.getEmail());
     if (userOptional.isEmpty()) {
-      throw new NotFoundException();
+      throw new AuthenticationException();
     }
 
     var user = userOptional.get();
