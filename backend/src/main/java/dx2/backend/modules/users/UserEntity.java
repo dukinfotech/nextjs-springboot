@@ -7,6 +7,8 @@ import java.util.List;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import dx2.backend.modules.permissions.PermissionEntity;
 import dx2.backend.modules.roles.RoleEntity;
 import jakarta.persistence.CascadeType;
@@ -42,6 +44,7 @@ public class UserEntity {
   private String email;
 
   @Column(name = "hashed_password")
+  @JsonIgnore
   private String hashedPassword;
 
   @Column(name = "created_at", nullable = false)
@@ -61,6 +64,7 @@ public class UserEntity {
       @JoinColumn(name = "user_id")
   }, inverseJoinColumns = {
       @JoinColumn(name = "role_id") })
+  @JsonIgnore
   private List<RoleEntity> roles = new ArrayList<RoleEntity>();
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = {
@@ -71,5 +75,6 @@ public class UserEntity {
       @JoinColumn(name = "user_id")
   }, inverseJoinColumns = {
       @JoinColumn(name = "permission_id") })
+  @JsonIgnore
   private List<PermissionEntity> permissions = new ArrayList<PermissionEntity>();
 }

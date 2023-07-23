@@ -7,6 +7,8 @@ import java.util.List;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import dx2.backend.modules.permissions.PermissionEntity;
 import dx2.backend.modules.users.UserEntity;
 import jakarta.persistence.CascadeType;
@@ -48,6 +50,7 @@ public class RoleEntity {
   private LocalDateTime deletedAt;
 
   @ManyToMany(mappedBy = "roles")
+  @JsonIgnore
   List<UserEntity> users = new ArrayList<UserEntity>();
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = {
@@ -58,5 +61,6 @@ public class RoleEntity {
       @JoinColumn(name = "role_id")
   }, inverseJoinColumns = {
       @JoinColumn(name = "permission_id") })
+  @JsonIgnore
   private List<PermissionEntity> permissions = new ArrayList<PermissionEntity>();
 }

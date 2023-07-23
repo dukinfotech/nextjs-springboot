@@ -7,6 +7,8 @@ import java.util.List;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import dx2.backend.modules.roles.RoleEntity;
 import dx2.backend.modules.users.UserEntity;
 import jakarta.persistence.Column;
@@ -44,8 +46,10 @@ public class PermissionEntity {
   private LocalDateTime deletedAt;
 
   @ManyToMany(mappedBy = "permissions")
+  @JsonIgnore
   List<UserEntity> users = new ArrayList<UserEntity>();
 
   @ManyToMany(mappedBy = "permissions")
+  @JsonIgnore
   List<RoleEntity> roles = new ArrayList<RoleEntity>();
 }
