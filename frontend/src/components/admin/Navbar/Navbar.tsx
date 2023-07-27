@@ -10,27 +10,27 @@ import {
 } from "@nextui-org/react";
 import { api } from "@/utils/api";
 import UserEntity from "@/entities/UserEntity";
-import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { logout, setUserInfo } from "@/states/slices/authSlice";
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { authAtom } from "@/states/authAtom";
 
 export default function Navbar() {
+  const [authState, setAuthState] = useAtom(authAtom);
+  const userInfo = authState.userInfo;
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   useEffect(() => {
     (async () => {
       if (!userInfo) {
         const res = await api.get("/api/users/info");
         const _userInfo = (await res.json()) as UserEntity;
-        dispatch(setUserInfo(_userInfo));
+        setAuthState({ ...authState, userInfo: _userInfo });
       }
     })();
   }, []);
 
   const handleLogout = () => {
-    dispatch(logout());
+    setAuthState({ accessToken: "", userInfo: null });
     router.replace("/login");
   };
 

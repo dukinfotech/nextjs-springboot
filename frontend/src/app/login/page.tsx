@@ -1,7 +1,5 @@
 "use client";
 
-import { useAppDispatch } from "@/hooks/hook";
-import { storageAccessToken } from "@/states/slices/authSlice";
 import { api } from "@/utils/api";
 import {
   Button,
@@ -15,6 +13,8 @@ import {
 import { useMemo, useState } from "react";
 import { Eye, EyeCrossed } from "react-flaticons";
 import { useRouter } from "next/navigation";
+import { authAtom } from "@/states/authAtom";
+import { useAtom } from "jotai";
 
 type Credentials = {
   email?: string;
@@ -22,7 +22,7 @@ type Credentials = {
 };
 
 export default function LoginPage() {
-  const dispatch = useAppDispatch();
+  const [authState, setAuthState] = useAtom(authAtom);
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [credentials, setCredentials] = useState<Credentials>();
@@ -48,7 +48,7 @@ export default function LoginPage() {
       setIsLoading(false);
       if (res.ok) {
         var data = await res.text();
-        dispatch(storageAccessToken(data));
+        setAuthState({ ...authState, accessToken: data });
         router.replace("/admin");
       } else {
         setErrorCode(res.status);

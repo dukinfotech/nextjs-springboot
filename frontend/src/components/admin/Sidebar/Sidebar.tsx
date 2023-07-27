@@ -4,13 +4,13 @@ import { useMemo } from "react";
 import Header from "./Header";
 import { ChartPie } from "react-flaticons";
 import { usePathname } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { toggleSidebar } from "@/states/slices/appSlice";
+import { useAtom } from "jotai";
+import { rootAtom } from "@/states/rootAtom";
 
 export default function Sidebar() {
+  const [rootState, setRootState] = useAtom(rootAtom);
+  const isShowSidebar = rootState.isShowSidebar;
   const pathname = usePathname();
-  const isShowSidebar = useAppSelector((state) => state.app.isShowSidebar);
-  const dispatch = useAppDispatch();
 
   const widthSidebar = useMemo(() => {
     return isShowSidebar ? "w-full sm:w-80" : "w-20";
@@ -22,7 +22,11 @@ export default function Sidebar() {
       aria-label="Sidebar"
     >
       <div style={{ transform: "translateY(-16px)" }}>
-        <Header onToggle={() => dispatch(toggleSidebar())} />
+        <Header
+          onToggle={() =>
+            setRootState({ ...rootState, isShowSidebar: !isShowSidebar })
+          }
+        />
       </div>
       <ul className="space-y-2">
         <li className={pathname === "/admin" ? "active" : ""}>

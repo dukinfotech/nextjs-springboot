@@ -1,10 +1,7 @@
-import { store } from "@/states/store";
-
 const getHeaders = () => {
-  const authState = store.getState().auth;
   return {
     "Content-Type": "application/json",
-    "Authorization": authState.accessToken ? `Bearer ${authState.accessToken}` : "",
+    // "Authorization": authState.accessToken ? `Bearer ${authState.accessToken}` : "",
   };
 };
 

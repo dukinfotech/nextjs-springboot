@@ -1,10 +1,12 @@
 "use client";
 
-import { useAppSelector } from "@/hooks/hook";
 import Navbar from "../Navbar/Navbar";
+import { useAtomValue } from "jotai";
+import { rootAtom } from "@/states/rootAtom";
 
 export default function Content({ children }: { children: React.ReactNode }) {
-  const isShowSidebar = useAppSelector((state) => state.app.isShowSidebar);
+  const rootState = useAtomValue(rootAtom);
+  const isShowSidebar = rootState.isShowSidebar;
 
   return (
     <div

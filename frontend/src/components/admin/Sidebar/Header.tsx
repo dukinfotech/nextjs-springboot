@@ -1,5 +1,6 @@
 "use client";
 
+import { rootAtom } from "@/states/rootAtom";
 import {
   Navbar,
   NavbarBrand,
@@ -7,15 +8,16 @@ import {
   NavbarItem,
   Button,
 } from "@nextui-org/react";
+import { useAtomValue } from "jotai";
 import { MenuBurger } from "react-flaticons";
-import { useAppSelector } from "@/hooks/hook";
 
 interface HeaderProps {
   onToggle: () => void;
 }
 
 export default function Header({ onToggle }: HeaderProps) {
-  const isShowSidebar = useAppSelector((state) => state.app.isShowSidebar);
+  const rootState = useAtomValue(rootAtom);
+  const isShowSidebar = rootState.isShowSidebar;
 
   return (
     <Navbar
