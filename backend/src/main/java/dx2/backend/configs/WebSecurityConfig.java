@@ -32,7 +32,7 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(
-            requests -> requests.requestMatchers("/api/auth/login").permitAll().anyRequest().permitAll())
+            requests -> requests.requestMatchers("/api/auth/login").permitAll().anyRequest().authenticated())
         .oauth2ResourceServer(configurer -> configurer.jwt(jwt -> jwt.decoder(this.jwtDecoder())))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
