@@ -8,11 +8,19 @@ import UserProfile from "./UserProfile";
 import LogoutButton from "./LogoutButton";
 import UserEntity from "@/entities/UserEntity";
 import { api } from "@/utils/api";
+import { redirect } from "next/navigation";
 
 const fetchUserInfo = async () => {
   const res = await api.get("/api/users/info");
-  const userInfo = (await res.json()) as UserEntity;
-  return userInfo;
+  if (res.ok) {
+    const userInfo = (await res.json()) as UserEntity;
+    return userInfo;
+  } else {
+    if (res.status === 401) {
+      redirect("/login");
+    }
+    return Promise.reject();
+  }
 };
 
 export default async function Navbar() {
@@ -25,7 +33,7 @@ export default async function Navbar() {
       </NavbarBrand>
       <NavbarContent justify="end">
         <NavbarItem>
-          <UserProfile user={user}/>
+          <UserProfile user={user} />
         </NavbarItem>
         <NavbarItem>
           <LogoutButton />
