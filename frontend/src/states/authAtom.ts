@@ -2,16 +2,14 @@ import UserEntity from "@/entities/UserEntity";
 import { atomWithStorage } from "jotai/utils";
 import { cookieStorage } from "./cookieStorage";
 
-export type AuthType = {
-  accessToken: string;
-  userInfo: UserEntity | null;
-};
+export const accessTokenAtom = atomWithStorage<string>(
+  "accessToken",
+  "",
+  cookieStorage
+);
 
-export const authAtom = atomWithStorage<AuthType>(
-  "auth", // key of cookie
-  {
-    accessToken: "",
-    userInfo: null,
-  },
+export const userInfoAtom = atomWithStorage<UserEntity | null>(
+  "userInfo",
+  null,
   cookieStorage
 );

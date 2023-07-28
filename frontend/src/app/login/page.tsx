@@ -13,8 +13,8 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { Eye, EyeCrossed } from "react-flaticons";
 import { useRouter } from "next/navigation";
-import { authAtom } from "@/states/authAtom";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
+import { accessTokenAtom, userInfoAtom } from "@/states/authAtom";
 
 type Credentials = {
   email?: string;
@@ -22,19 +22,18 @@ type Credentials = {
 };
 
 export default function LoginPage() {
-  const [authState, setAuthState] = useAtom(authAtom);
+  const setAccessToken = useSetAtom(accessTokenAtom);
+  const setUserInfo = useSetAtom(userInfoAtom);
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [credentials, setCredentials] = useState<Credentials>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorCode, setErrorCode] = useState<number>();
 
-  // Reset authState
+  // Reset accessToken and userInfo cookie
   useEffect(() => {
-    setAuthState({
-      accessToken: "",
-      userInfo: null,
-    });
+    setAccessToken("");
+    setUserInfo(null);
   }, []);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -56,7 +55,7 @@ export default function LoginPage() {
       setIsLoading(false);
       if (res.ok) {
         var data = await res.text();
-        setAuthState({ ...authState, accessToken: data });
+        setAccessToken(data);
         router.replace("/admin");
       } else {
         setErrorCode(res.status);

@@ -1,18 +1,11 @@
 "use client";
 
 import UserEntity from "@/entities/UserEntity";
-import { authAtom } from "@/states/authAtom";
-import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { userInfoAtom } from "@/states/authAtom";
+import { useHydrateAtoms } from "jotai/utils";
 
 export default function UserProfile({ user }: { user: UserEntity }) {
-  const [authState, setAuthState] = useAtom(authAtom);
-
-  useEffect(() => {
-    if (authState.accessToken) {
-      setAuthState({ ...authState, userInfo: user });
-    }
-  }, []);
+  useHydrateAtoms([[userInfoAtom, user]]);
 
   return <div>Hello, {user.firstName}</div>;
 }
