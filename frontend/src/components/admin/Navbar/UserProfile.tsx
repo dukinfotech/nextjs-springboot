@@ -5,13 +5,14 @@ import { authAtom } from "@/states/authAtom";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 
-
 export default function UserProfile({ user }: { user: UserEntity }) {
-  const [auth, setAuth] = useAtom(authAtom);
+  const [authState, setAuthState] = useAtom(authAtom);
 
   useEffect(() => {
-    setAuth({...auth, userInfo: user});
+    if (authState.accessToken) {
+      setAuthState({ ...authState, userInfo: user });
+    }
   }, []);
 
-  return <div>Hello, {user.firstName}</div>
+  return <div>Hello, {user.firstName}</div>;
 }
