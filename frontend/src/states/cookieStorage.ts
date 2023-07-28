@@ -11,7 +11,7 @@ export const cookieStorage = {
   },
   setItem(key: string, value: any) {
     setCookie(key, value, {
-      maxAge: parseInt(process.env.APP_ACCESS_TOKEN_EXPIRE as string) || 360,
+      maxAge: parseInt(process.env.APP_ACCESS_TOKEN_EXPIRE as string) || undefined,
     });
   },
   removeItem(key: string) {
