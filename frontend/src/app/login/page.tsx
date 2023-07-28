@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Eye, EyeCrossed } from "react-flaticons";
 import { useRouter } from "next/navigation";
 import { authAtom } from "@/states/authAtom";
@@ -28,6 +28,14 @@ export default function LoginPage() {
   const [credentials, setCredentials] = useState<Credentials>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorCode, setErrorCode] = useState<number>();
+
+  // Reset authState
+  useEffect(() => {
+    setAuthState({
+      accessToken: "",
+      userInfo: null,
+    });
+  }, []);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
