@@ -16,8 +16,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onToggle }: HeaderProps) {
-  const rootState = useAtomValue(rootAtom);
-  const isShowSidebar = rootState.isShowSidebar;
+  const { isShowSidebar } = useAtomValue(rootAtom);
 
   return (
     <Navbar

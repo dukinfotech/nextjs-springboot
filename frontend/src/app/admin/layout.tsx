@@ -1,5 +1,3 @@
-"use client";
-
 import { Providers } from "@/providers/Providers";
 import "../globals.css";
 import Sidebar from "@/components/admin/Sidebar/Sidebar";

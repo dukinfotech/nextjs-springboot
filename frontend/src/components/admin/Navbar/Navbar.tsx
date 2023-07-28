@@ -1,38 +1,22 @@
-"use client";
-
-import React, { useEffect } from "react";
 import {
   Navbar as NavbarUI,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Button,
-} from "@nextui-org/react";
-import { api } from "@/utils/api";
+} from "@nextui-org/navbar";
+import UserProfile from "./UserProfile";
+import LogoutButton from "./LogoutButton";
 import UserEntity from "@/entities/UserEntity";
-import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
-import { authAtom } from "@/states/authAtom";
+import { api } from "@/utils/api";
 
-export default function Navbar() {
-  const [authState, setAuthState] = useAtom(authAtom);
-  const userInfo = authState.userInfo;
-  const router = useRouter();
+const fetchUserInfo = async () => {
+  const res = await api.get("/api/users/info");
+  const userInfo = (await res.json()) as UserEntity;
+  return userInfo;
+};
 
-  useEffect(() => {
-    (async () => {
-      if (!userInfo) {
-        const res = await api.get("/api/users/info");
-        const _userInfo = (await res.json()) as UserEntity;
-        setAuthState({ ...authState, userInfo: _userInfo });
-      }
-    })();
-  }, []);
-
-  const handleLogout = () => {
-    setAuthState({ accessToken: "", userInfo: null });
-    router.replace("/login");
-  };
+export default async function Navbar() {
+  const user = await fetchUserInfo();
 
   return (
     <NavbarUI className="navbar">
@@ -41,12 +25,10 @@ export default function Navbar() {
       </NavbarBrand>
       <NavbarContent justify="end">
         <NavbarItem>
-          <div>Hello, {userInfo?.firstName}</div>
+          <UserProfile user={user}/>
         </NavbarItem>
         <NavbarItem>
-          <Button color="primary" variant="flat" onPress={handleLogout}>
-            Logout
-          </Button>
+          <LogoutButton />
         </NavbarItem>
       </NavbarContent>
     </NavbarUI>
