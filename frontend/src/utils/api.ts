@@ -24,35 +24,41 @@ const getHeaders = async () => {
   };
 };
 
-const get = async (url: string, headers?: Object) => {
-  if (typeof window === "undefined") url = "http://localhost:8080" + url;
-  return await fetch(url, {
+const getUrl = (path: string) => {
+  let host = "";
+  if (typeof window === "undefined") {
+    host = process.env.APP_HOST ?? "http://localhost:8080";
+  }
+  const url = host + path;
+  return url;
+}
+
+const get = async (path: string, headers?: Object) => {
+  return await fetch(getUrl(path), {
     method: "GET",
+    cache: "no-store",
     headers: await getHeaders(),
   });
 };
 
-const post = async (url: string, body?: Object, headers?: Object) => {
-  if (typeof window === "undefined") url = "http://localhost:8080" + url;
-  return await fetch(url, {
+const post = async (path: string, body?: Object, headers?: Object) => {
+  return await fetch(getUrl(path), {
     method: "POST",
     headers: await getHeaders(),
     body: JSON.stringify(body),
   });
 };
 
-const put = async (url: string, body?: Object, headers?: Object) => {
-  if (typeof window === "undefined") url = "http://localhost:8080" + url;
-  return await fetch(url, {
+const put = async (path: string, body?: Object, headers?: Object) => {
+  return await fetch(getUrl(path), {
     method: "PUT",
     headers: await getHeaders(),
     body: JSON.stringify(body),
   });
 };
 
-const softDelete = async (url: string, body?: Object, headers?: Object) => {
-  if (typeof window === "undefined") url = "http://localhost:8080" + url;
-  return await fetch(url, {
+const softDelete = async (path: string, body?: Object, headers?: Object) => {
+  return await fetch(getUrl(path), {
     method: "DELETE",
     headers: await getHeaders(),
     body: JSON.stringify(body),

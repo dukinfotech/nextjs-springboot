@@ -4,12 +4,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
-
 import dx2.backend.modules.users.UserEntity;
 import dx2.backend.modules.users.UserRepository;
 
@@ -24,6 +24,9 @@ public class AuthService {
 
   @Autowired
   UserRepository userRepository;
+
+  @Value("${app.accessToken.expire}")
+  private Integer accessTokenExpire;
 
   public String authenticate(Credentials credentials) throws AuthenticationException {
     var userOptional = userRepository.findOneByEmail(credentials.getEmail());
@@ -45,7 +48,7 @@ public class AuthService {
     var now = Instant.now();
     var claims = JwtClaimsSet.builder().issuer("self")
         .issuedAt(now)
-        .expiresAt(now.plus(1, ChronoUnit.HOURS))
+        .expiresAt(now.plus(accessTokenExpire, ChronoUnit.SECONDS))
         .subject(userEntity.getEmail())
         .build();
 
