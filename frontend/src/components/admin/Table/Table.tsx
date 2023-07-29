@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  Key,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { Key, ReactNode, useEffect, useMemo, useState } from "react";
 import {
   Table as TableUI,
   TableHeader,
@@ -25,6 +19,8 @@ import useQueryString from "@/hooks/useQueryString";
 import { useAtomValue } from "jotai";
 import { searchAtom, searchFieldsAtom } from "../Table/SearchBar";
 import { useHydrateAtoms } from "jotai/utils";
+import ConfirmModal from "../Modal/ConfirmModal";
+import { toast } from "react-toastify";
 
 interface TableProps {
   text: string;
@@ -91,44 +87,59 @@ export default function Table({
     setQueryString([{ key: "page", value: page }]);
   };
 
+  const handleDelete = async (id: number) => {
+    const res = await api.softDelete(`${endpoint}/${id}`);
+    if (res.ok) {
+      toast.success(`Deleted the record #${id}`);
+      fetchData();
+    }
+  };
+
   return (
-    <TableUI
-      topContent={<TopContent text={text} pagination={pagination} />}
-      aria-label={text}
-      sortDescriptor={descriptor}
-      onSortChange={handleSort}
-      bottomContent={
-        <BottomContent
-          pagination={pagination}
-          onChange={handlePaginationChange}
-        />
-      }
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            allowsSorting={column.sorting}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={"No data to display."}
-        items={pagination?.content || []}
-        isLoading={isLoading}
-        loadingContent={<Spinner />}
+    <>
+      <ConfirmModal action="delete" onDelete={handleDelete} />
+      <TableUI
+        topContent={<TopContent text={text} pagination={pagination} />}
+        aria-label={text}
+        sortDescriptor={descriptor}
+        onSortChange={handleSort}
+        bottomContent={
+          <BottomContent
+            pagination={pagination}
+            onChange={handlePaginationChange}
+          />
+        }
       >
-        {(item: any) => (
-          <TableRow key={item.id}>
-            {columns.map((column) => (
-              <TableCell>{column.render(item[column.uid])}</TableCell>
-            ))}
-          </TableRow>
-        )}
-      </TableBody>
-    </TableUI>
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              allowsSorting={column.sorting}
+              align={column.uid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          emptyContent={"No data to display."}
+          items={pagination?.content || []}
+          isLoading={isLoading}
+          loadingContent={<Spinner />}
+        >
+          {(item: any) => (
+            <TableRow key={item.id}>
+              {columns.map((column) => (
+                <TableCell>
+                  {column.render(
+                    item[column.uid === "actions" ? "id" : column.uid]
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          )}
+        </TableBody>
+      </TableUI>
+    </>
   );
 }

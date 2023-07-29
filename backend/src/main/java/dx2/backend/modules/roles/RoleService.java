@@ -28,4 +28,8 @@ public class RoleService {
     }
     return roleRepository.findByNameContainingIgnoreCaseOrTextContainingIgnoreCase(search, search, pageable);
   }
+
+  public void softDelete(Long id) {
+    roleRepository.deleteById(id);
+  }
 }

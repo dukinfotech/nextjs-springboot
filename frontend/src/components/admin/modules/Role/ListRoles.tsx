@@ -56,11 +56,11 @@ export default function ListRoles() {
       uid: "actions",
       name: "ACTIONS",
       sorting: false,
-      render() {
+      render(id: number) {
         return (
           <div className="relative flex items-center gap-2">
             <EditButton text="Edit role" />
-            <DeleteButton text="Delete role" />
+            <DeleteButton text="Delete role" id={id}/>
           </div>
         );
       },
