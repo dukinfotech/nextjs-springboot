@@ -17,7 +17,7 @@ const fetchUserInfo = async () => {
     return userInfo;
   } else {
     if (res.status === 401) {
-      redirect("/login");
+      redirect("/login?isExpired=true");
     }
     return Promise.reject();
   }
