@@ -21,8 +21,13 @@ import PaginationEntity from "@/entities/PaginationEntity";
 import TopContent from "../Table/TopContent";
 import BottomContent from "../Table/BottomContent";
 import useQueryString from "@/hooks/useQueryString";
+import { useAtomValue } from "jotai";
+import { searchAtom, searchFieldsAtom } from "../Table/SearchBar";
+import { useHydrateAtoms } from "jotai/utils";
 
 export default function ListRoles() {
+  const search = useAtomValue(searchAtom);
+  useHydrateAtoms([[searchFieldsAtom, ["Name", "Text"]]]);
   const columns = [
     { name: "ID", uid: "id", sorting: false },
     { name: "NAME", uid: "name", sorting: true },
@@ -37,6 +42,7 @@ export default function ListRoles() {
   const [pagination, setPagination] = useState<PaginationEntity<RoleEntity>>();
   const { getQueryString, setQueryString } = useQueryString();
   const queryString = getQueryString();
+  setQueryString([{ key: "search", value: search }]);
 
   const descriptor: SortDescriptor = useMemo(() => {
     const urlSearchParams = new URLSearchParams(queryString);
