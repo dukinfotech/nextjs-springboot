@@ -12,7 +12,7 @@ export default function BottomContent({
 }: BottomContentProps) {
   return (
     <>
-      {pagination ? (
+      {pagination && pagination.totalPages > 0 ? (
         <div className="flex w-full justify-center">
           <Pagination
             isCompact
