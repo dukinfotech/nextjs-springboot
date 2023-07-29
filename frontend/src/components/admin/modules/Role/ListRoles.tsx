@@ -1,9 +1,9 @@
 "use client";
 
 import useMoment from "@/hooks/useMoment";
-import Table, { TableColumn } from "../Table/Table";
-import EditButton from "../Table/EditButton";
-import DeleteButton from "../Table/DeleteButton";
+import Table, { TableColumn } from "../../Table/Table";
+import EditButton from "../../Table/EditButton";
+import DeleteButton from "../../Table/DeleteButton";
 
 export default function ListRoles() {
   const { timestamp } = useMoment();
