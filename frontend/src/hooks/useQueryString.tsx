@@ -4,7 +4,7 @@ export default function useQueryString() {
   const defaultValues: any = {
     search: "",
     page: 1,
-    size: 2,
+    size: 10,
     sort: "createdAt",
     isAsc: false,
   };
