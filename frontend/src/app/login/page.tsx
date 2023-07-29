@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
 import { Eye, EyeCrossed } from "react-flaticons";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSetAtom } from "jotai";
 import { accessTokenAtom, userInfoAtom } from "@/states/authAtom";
 
@@ -29,6 +29,13 @@ export default function LoginPage() {
   const [credentials, setCredentials] = useState<Credentials>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorCode, setErrorCode] = useState<number>();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("isExpired") === "true") {
+      setErrorCode(440);
+    }
+  }, []);
 
   // Reset accessToken and userInfo cookie
   useEffect(() => {
@@ -39,12 +46,15 @@ export default function LoginPage() {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const errorMsg = useMemo(() => {
-    if (errorCode) {
-      return errorCode === 401
-        ? "Invalid email or password."
-        : "Internal Server Error";
-    } else {
-      return null;
+    switch (errorCode) {
+      case undefined:
+        return null;
+      case 401:
+        return "Invalid email or password.";
+      case 440:
+        return "Session expired.";
+      default:
+        return "Internal Server Error";
     }
   }, [errorCode]);
 
