@@ -1,23 +1,15 @@
 import PaginationEntity from "@/entities/PaginationEntity";
-import useQueryString from "@/hooks/useQueryString";
 import { Pagination } from "@nextui-org/react";
 
 interface BottomContentProps {
   pagination?: PaginationEntity<any>;
+  onChange: (page: number) => void;
 }
 
-export default function BottomContent({ pagination }: BottomContentProps) {
-  const { setQueryString } = useQueryString();
-
-  const handleChange = (page: number) => {
-    setQueryString([
-      {
-        key: "page",
-        value: page,
-      },
-    ]);
-  };
-
+export default function BottomContent({
+  pagination,
+  onChange,
+}: BottomContentProps) {
   return (
     <>
       {pagination ? (
@@ -29,7 +21,7 @@ export default function BottomContent({ pagination }: BottomContentProps) {
             color="primary"
             page={pagination.number + 1}
             total={pagination.totalPages}
-            onChange={handleChange}
+            onChange={onChange}
           />
         </div>
       ) : null}

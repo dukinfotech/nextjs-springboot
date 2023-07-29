@@ -21,7 +21,6 @@ import PaginationEntity from "@/entities/PaginationEntity";
 import TopContent from "../Table/TopContent";
 import BottomContent from "../Table/BottomContent";
 import useQueryString from "@/hooks/useQueryString";
-import { useSearchParams } from "next/navigation";
 
 export default function ListRoles() {
   const columns = [
@@ -69,6 +68,10 @@ export default function ListRoles() {
       { key: "sort", value: descriptor.column },
       { key: "isAsc", value: descriptor.direction === "ascending" },
     ]);
+  };
+
+  const handlePaginationChange = (page: number) => {
+    setQueryString([{ key: "page", value: page }]);
   };
 
   const renderCell = useCallback((role: RoleEntity, columnKey: Key) => {
@@ -121,7 +124,12 @@ export default function ListRoles() {
       aria-label="List Roles"
       sortDescriptor={descriptor}
       onSortChange={handleSort}
-      bottomContent={<BottomContent pagination={pagination} />}
+      bottomContent={
+        <BottomContent
+          pagination={pagination}
+          onChange={handlePaginationChange}
+        />
+      }
     >
       <TableHeader columns={columns}>
         {(column) => (
