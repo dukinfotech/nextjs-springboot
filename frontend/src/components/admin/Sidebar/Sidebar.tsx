@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Header from "./Header";
-import { ChartPie } from "react-flaticons";
+import { ChartPie, Users, ShieldCheck } from "react-flaticons";
 import { usePathname } from "next/navigation";
 import { useAtom } from "jotai";
 import { rootAtom } from "@/states/rootAtom";
@@ -31,7 +31,7 @@ export default function Sidebar() {
       <ul className="space-y-2">
         <li className={pathname === "/admin" ? "active" : ""}>
           <a
-            href="#"
+            href="/admin"
             className={`${
               isShowSidebar ? "justify-start" : "justify-center"
             } flex p-2 text-base font-normal rounded-lg text-gray-300 hover:text-gray-900 hover:bg-gray-100`}
@@ -39,6 +39,32 @@ export default function Sidebar() {
             <ChartPie />
             <span className={isShowSidebar ? "ml-3 block" : "hidden"}>
               Dashboard
+            </span>
+          </a>
+        </li>
+        <li className={pathname === "/admin/roles" ? "active" : ""}>
+          <a
+            href="/admin/roles"
+            className={`${
+              isShowSidebar ? "justify-start" : "justify-center"
+            } flex p-2 text-base font-normal rounded-lg text-gray-300 hover:text-gray-900 hover:bg-gray-100`}
+          >
+            <Users />
+            <span className={isShowSidebar ? "ml-3 block" : "hidden"}>
+              Roles
+            </span>
+          </a>
+        </li>
+        <li className={pathname === "/admin/permissions" ? "active" : ""}>
+          <a
+            href="/admin/permissions"
+            className={`${
+              isShowSidebar ? "justify-start" : "justify-center"
+            } flex p-2 text-base font-normal rounded-lg text-gray-300 hover:text-gray-900 hover:bg-gray-100`}
+          >
+            <ShieldCheck />
+            <span className={isShowSidebar ? "ml-3 block" : "hidden"}>
+              Permissions
             </span>
           </a>
         </li>
