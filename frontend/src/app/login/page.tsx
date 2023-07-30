@@ -37,12 +37,6 @@ export default function LoginPage() {
     }
   }, []);
 
-  // Reset accessToken and userInfo cookie
-  useEffect(() => {
-    setAccessToken("");
-    setUserInfo(null);
-  }, []);
-
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const errorMsg = useMemo(() => {
