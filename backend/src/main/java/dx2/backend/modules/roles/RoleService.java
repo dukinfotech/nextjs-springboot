@@ -1,5 +1,7 @@
 package dx2.backend.modules.roles;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,13 @@ public class RoleService {
       pageable = PageRequest.of(page - 1, size, Sort.by(sort).descending());
     }
     return roleRepository.findByNameContainingIgnoreCaseOrTextContainingIgnoreCase(search, search, pageable);
+  }
+
+  public RoleEntity create(RoleEntity role) {
+    role.setCreatedAt(LocalDateTime.now());
+    role.setUpdatedAt(LocalDateTime.now());
+    roleRepository.saveAndFlush(role);
+    return role;
   }
 
   public void softDelete(Long id) {

@@ -99,7 +99,9 @@ export default function Table({
     <>
       <ConfirmModal action="delete" onDelete={handleDelete} />
       <TableUI
-        topContent={<TopContent text={text} pagination={pagination} />}
+        topContent={
+          <TopContent text={text} pagination={pagination} />
+        }
         aria-label={text}
         sortDescriptor={descriptor}
         onSortChange={handleSort}
