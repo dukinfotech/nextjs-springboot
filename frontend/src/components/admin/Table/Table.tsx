@@ -21,6 +21,7 @@ import { searchAtom, searchFieldsAtom } from "../Table/SearchBar";
 import { useHydrateAtoms } from "jotai/utils";
 import ConfirmModal from "../Modal/ConfirmModal";
 import { toast } from "react-toastify";
+import { pageSizeAtom } from "./SelectPageSize";
 
 interface TableProps {
   text: string;
@@ -43,13 +44,20 @@ export default function Table({
   columns,
 }: TableProps) {
   const search = useAtomValue(searchAtom);
+  const pageSize = useAtomValue(pageSizeAtom);
   useHydrateAtoms([[searchFieldsAtom, searchFields]]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState<PaginationEntity<unknown>>();
   const { getQueryString, setQueryString } = useQueryString();
   const queryString = getQueryString();
-  setQueryString([{ key: "search", value: search }]);
+  setQueryString([
+    { key: "search", value: search },
+    {
+      key: "size",
+      value: pageSize,
+    },
+  ]);
 
   const descriptor: SortDescriptor = useMemo(() => {
     const urlSearchParams = new URLSearchParams(queryString);
@@ -103,9 +111,7 @@ export default function Table({
     <>
       <ConfirmModal action="delete" onDelete={handleDelete} />
       <TableUI
-        topContent={
-          <TopContent text={text} pagination={pagination} />
-        }
+        topContent={<TopContent text={text} pagination={pagination} />}
         aria-label={text}
         sortDescriptor={descriptor}
         onSortChange={handleSort}

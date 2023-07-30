@@ -2,6 +2,7 @@ import PaginationEntity from "@/entities/PaginationEntity";
 import SearchBar from "./SearchBar";
 import { Button, Link } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
+import SelectPageSize from "./SelectPageSize";
 
 interface TopContentProps {
   text: string;
@@ -23,15 +24,18 @@ export default function TopContent({ text, pagination }: TopContentProps) {
           <SearchBar />
         </div>
       </div>
-      <Button
-        href={`${pathName}/create`}
-        as={Link}
-        color="primary"
-        showAnchorIcon
-        variant="solid"
-      >
-        Create
-      </Button>
+      <div className="flex justify-between items-center">
+        <Button
+          href={`${pathName}/create`}
+          as={Link}
+          color="primary"
+          showAnchorIcon
+          variant="solid"
+        >
+          Create
+        </Button>
+        <SelectPageSize />
+      </div>
     </div>
   );
 }
