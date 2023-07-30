@@ -65,6 +65,8 @@ export default function Table({
     if (res.ok) {
       const _pagination = (await res.json()) as PaginationEntity<unknown>;
       setPagination(_pagination);
+    } else {
+      toast.error(res.statusText);
     }
   };
 
@@ -92,6 +94,8 @@ export default function Table({
     if (res.ok) {
       toast.success(`Deleted the record #${id}`);
       fetchData();
+    } else {
+      toast.error(res.statusText);
     }
   };
 

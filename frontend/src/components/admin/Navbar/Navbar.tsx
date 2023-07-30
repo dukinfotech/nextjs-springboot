@@ -8,18 +8,13 @@ import UserProfile from "./UserProfile";
 import LogoutButton from "./LogoutButton";
 import UserEntity from "@/entities/UserEntity";
 import { api } from "@/utils/api";
-import { redirect } from "next/navigation";
 
-const fetchUserInfo = async () => {
+const fetchUserInfo = async (): Promise<UserEntity> => {
   const res = await api.get("/api/users/info");
   if (res.ok) {
-    const userInfo = (await res.json()) as UserEntity;
-    return userInfo;
+    return await res.json();
   } else {
-    if (res.status === 401) {
-      redirect("/login?isExpired=true");
-    }
-    return Promise.reject();
+    throw new Error(res.statusText);
   }
 };
 
