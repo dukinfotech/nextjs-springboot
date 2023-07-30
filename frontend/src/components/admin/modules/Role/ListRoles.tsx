@@ -59,7 +59,7 @@ export default function ListRoles() {
       render(id: number) {
         return (
           <div className="relative flex items-center gap-2">
-            <EditButton text="Edit role" />
+            <EditButton text="Edit role" id={id} />
             <DeleteButton text="Delete role" id={id}/>
           </div>
         );

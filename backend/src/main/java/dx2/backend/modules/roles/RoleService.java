@@ -1,7 +1,7 @@
 package dx2.backend.modules.roles;
 
 import java.time.LocalDateTime;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +29,11 @@ public class RoleService {
       pageable = PageRequest.of(page - 1, size, Sort.by(sort).descending());
     }
     return roleRepository.findByNameContainingIgnoreCaseOrTextContainingIgnoreCase(search, search, pageable);
+  }
+
+  public Optional<RoleEntity> get(Long id) {
+    var role = roleRepository.findById(id);
+    return role;
   }
 
   public RoleEntity create(RoleEntity role) {
