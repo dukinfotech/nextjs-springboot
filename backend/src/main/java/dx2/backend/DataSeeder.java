@@ -124,14 +124,11 @@ public class DataSeeder {
   }
 
   private void linkRolesWithPermissions() {
-    var adminRoles = roleRepository.findByNameIn(Arrays.asList("Super Admin", "Admin"));
+    var superAdminRole = roleRepository.findOneByName("Super Admin");
     var permissions = permissionRepository.findAll();
+    superAdminRole.setPermissions(permissions);
 
-    for (var adminRole : adminRoles) {
-      adminRole.setPermissions(permissions);
-    }
-
-    roleRepository.saveAllAndFlush(adminRoles);
+    roleRepository.saveAndFlush(superAdminRole);
   }
 
   private void linkUsersWithRoles() {
