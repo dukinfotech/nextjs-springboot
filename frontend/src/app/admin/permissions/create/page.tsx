@@ -34,7 +34,8 @@ export default function CreatePermissionPage() {
       toast.success("Created permission successully");
       router.back();
     } else {
-      toast.error(res.statusText);
+      const error = await res.json();
+      toast.error(error.message);
     }
     setIsLoading(false);
   };

@@ -33,7 +33,8 @@ export default function CreateRolePage() {
       toast.success("Created role successully");
       router.back();
     } else {
-      toast.error(res.statusText);
+      const error = await res.json();
+      toast.error(error.message);
     }
     setIsLoading(false);
   };

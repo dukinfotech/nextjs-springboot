@@ -39,7 +39,8 @@ export default function EditPermission({ permission }: EditPermissionProps) {
       toast.success("Updated permission successully");
       router.back();
     } else {
-      toast.error(res.statusText);
+      const error = await res.json();
+      toast.error(error.message);
     }
     setIsLoading(false);
   };

@@ -38,7 +38,8 @@ export default function EditRole({ role }: EditRoleProps) {
       toast.success("Updated role successully");
       router.back();
     } else {
-      toast.error(res.statusText);
+      const error = await res.json();
+      toast.error(error.message);
     }
     setIsLoading(false);
   };
