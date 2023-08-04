@@ -2,15 +2,19 @@ package dx2.backend.modules.permissions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/permissions")
@@ -31,12 +35,11 @@ public class PermissionController {
 
   @GetMapping("{id}")
   ResponseEntity<PermissionEntity> get(@PathVariable Long id) {
-    var permissionOptional = permissionService.get(id);
-    if (permissionOptional.isPresent()) {
-      var permission = permissionOptional.get();
+    try {
+      var permission = permissionService.get(id);
       return ResponseEntity.ok(permission);
-    } else {
-      return ResponseEntity.notFound().build();
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
   }
 
@@ -46,9 +49,23 @@ public class PermissionController {
     return ResponseEntity.ok(newPermission);
   }
 
+  @PutMapping("{id}")
+  ResponseEntity<PermissionEntity> update(@PathVariable Long id, @RequestBody PermissionEntity permission) {
+    try {
+      var updatedPermission = permissionService.update(id, permission);
+      return ResponseEntity.ok(updatedPermission);
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+  }
+
   @DeleteMapping("{id}")
   ResponseEntity<Void> softDelete(@PathVariable Long id) {
-    permissionService.softDelete(id);
-    return ResponseEntity.ok(null);
+    try {
+      permissionService.softDelete(id);
+      return ResponseEntity.ok(null);
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
   }
 }

@@ -1,19 +1,22 @@
 package dx2.backend.modules.permissions;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import dx2.backend.modules.users.UserService;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PermissionService {
 
   @Autowired
   PermissionRepository permissionRepository;
+
+  @Autowired
+  UserService userService;
 
   public Page<PermissionEntity> findAllWithPagination(
       String search,
@@ -31,19 +34,43 @@ public class PermissionService {
     return permissionRepository.findByNameContainingIgnoreCaseOrTextContainingIgnoreCase(search, search, pageable);
   }
 
-  public Optional<PermissionEntity> get(Long id) {
-    var permission = permissionRepository.findById(id);
-    return permission;
+  public PermissionEntity get(Long id) {
+    var permissionOptional = permissionRepository.findById(id);
+    if (permissionOptional.isPresent()) {
+      var permission = permissionOptional.get();
+      return permission;
+    } else {
+      throw new EntityNotFoundException("Permission not found");
+    }
   }
 
   public PermissionEntity create(PermissionEntity permission) {
-    permission.setCreatedAt(LocalDateTime.now());
-    permission.setUpdatedAt(LocalDateTime.now());
+    var logginUser = userService.getLoginUserInfo();
+    permission.setLastUpdatedBy(logginUser);
     permissionRepository.saveAndFlush(permission);
     return permission;
   }
 
+  public PermissionEntity update(Long id, PermissionEntity permission) {
+    var updatedPermissionOptional = permissionRepository.findById(id);
+    if (updatedPermissionOptional.isPresent()) {
+      var logginUser = userService.getLoginUserInfo();
+      var updatedPermission = updatedPermissionOptional.get();
+      updatedPermission.setName(permission.getName());
+      updatedPermission.setText(permission.getText());
+      updatedPermission.setLastUpdatedBy(logginUser);
+      permissionRepository.saveAndFlush(updatedPermission);
+      return updatedPermission;
+    } else {
+      throw new EntityNotFoundException("Permission not found");
+    }
+  }
+
   public void softDelete(Long id) {
-    permissionRepository.deleteById(id);
+    var permission = this.get(id);
+    var logginUser = userService.getLoginUserInfo();
+    permission.setLastUpdatedBy(logginUser);
+    permissionRepository.saveAndFlush(permission);
+    permissionRepository.delete(permission);
   }
 }

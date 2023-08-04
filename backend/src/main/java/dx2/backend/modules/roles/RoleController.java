@@ -2,15 +2,19 @@ package dx2.backend.modules.roles;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -31,12 +35,11 @@ public class RoleController {
 
   @GetMapping("{id}")
   ResponseEntity<RoleEntity> get(@PathVariable Long id) {
-    var roleOptional = roleService.get(id);
-    if (roleOptional.isPresent()) {
-      var role = roleOptional.get();
+    try {
+      var role = roleService.get(id);
       return ResponseEntity.ok(role);
-    } else {
-      return ResponseEntity.notFound().build();
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
   }
 
@@ -46,9 +49,23 @@ public class RoleController {
     return ResponseEntity.ok(newRole);
   }
 
+  @PutMapping("{id}")
+  ResponseEntity<RoleEntity> update(@PathVariable Long id, @RequestBody RoleEntity role) {
+    try {
+      var updatedRole = roleService.update(id, role);
+      return ResponseEntity.ok(updatedRole);
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+  }
+
   @DeleteMapping("{id}")
   ResponseEntity<Void> softDelete(@PathVariable Long id) {
-    roleService.softDelete(id);
-    return ResponseEntity.ok(null);
+    try {
+      roleService.softDelete(id);
+      return ResponseEntity.ok(null);
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
   }
 }

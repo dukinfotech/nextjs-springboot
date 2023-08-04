@@ -34,7 +34,7 @@ export default function EditPermission({ permission }: EditPermissionProps) {
 
   const handleSave = async () => {
     setIsLoading(true);
-    const res = await api.post("/api/permissions", editPermissionForm);
+    const res = await api.put(`/api/permissions/${permission.id}`, editPermissionForm);
     if (res.ok) {
       toast.success("Updated permission successully");
       router.back();

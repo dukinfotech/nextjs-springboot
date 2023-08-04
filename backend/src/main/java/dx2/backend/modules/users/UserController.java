@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,12 +24,11 @@ public class UserController {
 
   @GetMapping("/info")
   ResponseEntity<UserEntity> getLoginUserInfo() {
-    var userOptional = userService.getLoginUserInfo();
-    if (userOptional.isPresent()) {
-      var user = userOptional.get();
+    try {
+      var user = userService.getLoginUserInfo();
       return ResponseEntity.ok(user);
-    } else {
-      return ResponseEntity.notFound().build();
+    } catch (EntityNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
   }
 }

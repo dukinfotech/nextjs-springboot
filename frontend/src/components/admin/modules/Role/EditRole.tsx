@@ -33,7 +33,7 @@ export default function EditRole({ role }: EditRoleProps) {
 
   const handleSave = async () => {
     setIsLoading(true);
-    const res = await api.post("/api/roles", editRoleForm);
+    const res = await api.put(`/api/roles/${role.id}`, editRoleForm);
     if (res.ok) {
       toast.success("Updated role successully");
       router.back();
