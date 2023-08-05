@@ -4,6 +4,7 @@ import useMoment from "@/hooks/useMoment";
 import Table, { TableColumn } from "../../Table/Table";
 import EditButton from "../../Table/EditButton";
 import DeleteButton from "../../Table/DeleteButton";
+import UserEntity from "@/entities/UserEntity";
 
 export default function ListPermissions() {
   const { timestamp } = useMoment();
@@ -53,6 +54,18 @@ export default function ListPermissions() {
       },
     },
     {
+      uid: "lastUpdatedBy",
+      name: "LAST UPDATED BY",
+      sorting: false,
+      render(user?: UserEntity) {
+        if (user) {
+          return <div>{`${user.firstName} ${user.lastName}`}</div>;
+        } else {
+          return null;
+        }
+      },
+    },
+    {
       uid: "actions",
       name: "ACTIONS",
       sorting: false,
@@ -60,7 +73,7 @@ export default function ListPermissions() {
         return (
           <div className="relative flex items-center gap-2">
             <EditButton text="Edit permission" id={id} />
-            <DeleteButton text="Delete permission" id={id}/>
+            <DeleteButton text="Delete permission" id={id} />
           </div>
         );
       },

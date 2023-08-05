@@ -4,6 +4,7 @@ import useMoment from "@/hooks/useMoment";
 import Table, { TableColumn } from "../../Table/Table";
 import EditButton from "../../Table/EditButton";
 import DeleteButton from "../../Table/DeleteButton";
+import UserEntity from "@/entities/UserEntity";
 
 export default function ListRoles() {
   const { timestamp } = useMoment();
@@ -53,6 +54,18 @@ export default function ListRoles() {
       },
     },
     {
+      uid: "lastUpdatedBy",
+      name: "LAST UPDATED BY",
+      sorting: false,
+      render(user?: UserEntity) {
+        if (user) {
+          return <div>{`${user.firstName} ${user.lastName}`}</div>;
+        } else {
+          return null;
+        }
+      },
+    },
+    {
       uid: "actions",
       name: "ACTIONS",
       sorting: false,
@@ -60,7 +73,7 @@ export default function ListRoles() {
         return (
           <div className="relative flex items-center gap-2">
             <EditButton text="Edit role" id={id} />
-            <DeleteButton text="Delete role" id={id}/>
+            <DeleteButton text="Delete role" id={id} />
           </div>
         );
       },
