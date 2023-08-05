@@ -6,7 +6,6 @@ import dx2.backend.modules.roles.RoleEntity;
 import dx2.backend.modules.roles.RoleRepository;
 import dx2.backend.modules.users.UserEntity;
 import dx2.backend.modules.users.UserRepository;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,9 @@ public class DataSeeder {
 
   @EventListener
   public void seed(ContextRefreshedEvent event) {
+    var isSeededUsers = this.seedUsers();
     var isSeededRoles = this.seedRoles();
     var isSeededPermissions = this.seedPermissions();
-    var isSeededUsers = this.seedUsers();
 
     if (isSeededRoles.equals(true) && isSeededPermissions.equals(true) && isSeededUsers.equals(true)) {
       this.linkRolesWithPermissions();
@@ -43,7 +42,6 @@ public class DataSeeder {
 
   private Boolean seedRoles() {
     if (roleRepository.count() == 0) {
-      var now = LocalDateTime.now();
       var roleNames = new ArrayList<String>();
       roleNames.add("Super Admin");
       roleNames.add("Admin");
@@ -54,8 +52,6 @@ public class DataSeeder {
         var newRole = new RoleEntity();
         newRole.setName(roleName);
         newRole.setText(roleName);
-        newRole.setCreatedAt(now);
-        newRole.setUpdatedAt(now);
         newRoles.add(newRole);
       }
       roleRepository.saveAllAndFlush(newRoles);
@@ -68,7 +64,6 @@ public class DataSeeder {
 
   private Boolean seedPermissions() {
     if (permissionRepository.count() == 0) {
-      var now = LocalDateTime.now();
       var permissionNames = new ArrayList<String>();
       permissionNames.add("list_role");
       permissionNames.add("create_role");
@@ -91,8 +86,6 @@ public class DataSeeder {
         var newPermission = new PermissionEntity();
         newPermission.setName(permissionName);
         newPermission.setText(permissionName);
-        newPermission.setCreatedAt(now);
-        newPermission.setUpdatedAt(now);
         newPermissions.add(newPermission);
       }
 
@@ -106,14 +99,11 @@ public class DataSeeder {
 
   private Boolean seedUsers() {
     if (userRepository.count() == 0) {
-      var now = LocalDateTime.now();
       var newUser = new UserEntity();
       newUser.setFirstName("Duc");
       newUser.setLastName("Doan");
       newUser.setEmail("dukinfotech@gmail.com");
       newUser.setHashedPassword(this.passwordEncoder.encode("@Haiphong888"));
-      newUser.setCreatedAt(now);
-      newUser.setUpdatedAt(now);
 
       userRepository.saveAndFlush(newUser);
 

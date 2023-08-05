@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Header from "./Header";
-import { ChartPie, Users, ShieldCheck } from "react-flaticons";
+import { ChartPie, Users, ShieldCheck, Clock } from "react-flaticons";
 import { usePathname } from "next/navigation";
 import { useAtom } from "jotai";
 import { rootAtom } from "@/states/rootAtom";
@@ -65,6 +65,19 @@ export default function Sidebar() {
             <ShieldCheck />
             <span className={isShowSidebar ? "ml-3 block" : "hidden"}>
               Permissions
+            </span>
+          </a>
+        </li>
+        <li className={pathname === "/admin/traces" ? "active" : ""}>
+          <a
+            href="/admin/traces"
+            className={`${
+              isShowSidebar ? "justify-start" : "justify-center"
+            } flex p-2 text-base font-normal rounded-lg text-gray-300 hover:text-gray-900 hover:bg-gray-100`}
+          >
+            <Clock />
+            <span className={isShowSidebar ? "ml-3 block" : "hidden"}>
+              Traces
             </span>
           </a>
         </li>
