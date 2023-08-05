@@ -2,9 +2,8 @@
 
 import useMoment from "@/hooks/useMoment";
 import Table, { TableColumn } from "../../Table/Table";
-import EditButton from "../../Table/EditButton";
-import DeleteButton from "../../Table/DeleteButton";
 import UserEntity from "@/entities/UserEntity";
+import JsonViewer from "../../Table/JsonViewer";
 
 export default function ListTraces() {
   const { timestamp } = useMoment();
@@ -70,14 +69,13 @@ export default function ListTraces() {
       },
     },
     {
-      uid: "actions",
+      uid: "jsonData",
       name: "ACTIONS",
       sorting: false,
-      render(id: number) {
+      render(jsonData: Object) {
         return (
           <div className="relative flex items-center gap-2">
-            <EditButton text="Edit role" id={id} />
-            <DeleteButton text="Delete role" id={id} />
+            <JsonViewer text="View data" json={jsonData} />
           </div>
         );
       },
