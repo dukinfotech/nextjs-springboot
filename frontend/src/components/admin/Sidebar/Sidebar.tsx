@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Header from "./Header";
-import { ChartPie, Users, ShieldCheck, Clock } from "react-flaticons";
+import { ChartPie, Users, ShieldCheck, Clock, Loading } from "react-flaticons";
 import { useAtom } from "jotai";
 import { rootAtom } from "@/states/rootAtom";
 import MenuItem from "./MenuItem";
@@ -32,6 +32,7 @@ export default function Sidebar() {
         <MenuItem text="Roles" path="/admin/roles" icon={<Users />} />
         <MenuItem text="Permissions" path="/admin/permissions" icon={<ShieldCheck />} />
         <MenuItem text="Traces" path="/admin/traces" icon={<Clock />} />
+        <MenuItem text="Change Log" path="/admin/changelog" icon={<Loading />} />
       </ul>
     </aside>
   );
